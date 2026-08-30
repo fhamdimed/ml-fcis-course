@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Machine Learning</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-2244a62d8207ad721db1ea9f3e48a014.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-full">
+
+<main class="content column-page" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Machine Learning</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="iu-course">
+
+  <header class="iu-hero">
+    <div class="iu-hero__top">
+      <div class="iu-logo-wrap">
+        <img class="iu-logo" src="_style/iu_logo.svg" alt="Islamic University of Madinah logo">
+      </div>
+
+      <div>
+        <div class="iu-eyebrow">Islamic University of Madinah</div>
+
+        <div class="iu-course-type">
+          <span class="iu-course-type__icon">✦</span>
+          <span>Course Portal</span>
+        </div>
+
+        <h1>Machine Learning</h1>
+
+        <p class="iu-hero__subtitle">
+          Course materials, assessment information, and practical learning resources.
+        </p>
+
+        <div class="iu-instructor">
+          <strong>Dr. Fayçal Hamdi</strong>
+          <span>Faculty of Computer and Information Systems</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="iu-page-meta-grid">
+      <div class="iu-page-meta-card">
+        <strong>CCS-3452</strong>
+        <span>Course code</span>
+      </div>
+      <div class="iu-page-meta-card">
+        <strong>Bachelor</strong>
+        <span>Level</span>
+      </div>
+      <div class="iu-page-meta-card">
+        <strong>5 Learning Outcomes</strong>
+        <span>Coverage across the semester</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="course-section">
+    <div class="welcome-panel">
+      <h2>Welcome</h2>
+
+      <p>
+        This course develops the foundations of <strong>Machine Learning (ML)</strong>
+        through data understanding, preprocessing, supervised learning, model evaluation,
+        neural networks, clustering, and dimensionality reduction.
+      </p>
+
+      <p>The course combines:</p>
+
+      <ul>
+        <li>conceptual understanding;</li>
+        <li>data analysis and preprocessing;</li>
+        <li>algorithmic and mathematical reasoning;</li>
+        <li>practical implementation in Python;</li>
+        <li>experimental model comparison;</li>
+        <li>evaluation, interpretation, and decision-making.</li>
+      </ul>
+
+      <p>
+        The objective is not only to fit models, but to understand
+        <strong>how they learn, how data representation affects them, how generalization should be evaluated,
+        and how model decisions should be justified in context</strong>.
+      </p>
+
+      <div class="course-glance">
+        <div class="course-glance__title">Course at a glance</div>
+        <div class="glance-grid">
+          <div class="glance-item"><strong>Learning format:</strong> lectures, guided labs, individual assignments, quizzes, exams, and a group project</div>
+          <div class="glance-item"><strong>Core reference:</strong> James, Witten, Hastie &amp; Tibshirani, <em>An Introduction to Statistical Learning with Applications in Python</em>, 2023</div>
+          <div class="glance-item"><strong>Main practical environment:</strong> Python and Jupyter Notebook</div>
+          <div class="glance-item"><strong>Group project:</strong> teams of 3 students</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="course-section">
+    <div class="section-heading">
+      <div class="section-icon">C</div>
+      <div>
+        <h2>Course Learning Outcomes</h2>
+        <p>What you should be able to demonstrate by the end of the course.</p>
+      </div>
+    </div>
+
+    <div class="clo-grid">
+      <div class="clo-item">
+        <div class="clo-badge">CLO1</div>
+        <p>Explain the fundamental concepts of machine learning, including learning paradigms, data representation, model assumptions, and evaluation principles.</p>
+      </div>
+
+      <div class="clo-item">
+        <div class="clo-badge">CLO2</div>
+        <p>Analyze datasets and apply appropriate preprocessing, transformation, and feature engineering techniques.</p>
+      </div>
+
+      <div class="clo-item">
+        <div class="clo-badge">CLO3</div>
+        <p>Construct and analyze machine learning models by applying algorithmic principles and internal computations.</p>
+      </div>
+
+      <div class="clo-item">
+        <div class="clo-badge">CLO4</div>
+        <p>Apply supervised and unsupervised learning techniques to solve practical problems and interpret their outcomes.</p>
+      </div>
+
+      <div class="clo-item">
+        <div class="clo-badge">CLO5</div>
+        <p>Evaluate machine learning models using appropriate metrics and justify decisions based on performance trade-offs and real-world context.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="course-section">
+    <div class="section-heading">
+      <div class="section-icon">L</div>
+      <div>
+        <h2>Lectures</h2>
+        <p>Eight course parts, from Machine Learning foundations to unsupervised learning and dimensionality reduction.</p>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <a class="link-card" href="lectures/lecture1_ml_foundations_generalization.pdf">
+        <div class="link-card__meta">
+          <span class="meta-pill">Lecture 1</span>
+          <span class="meta-pill">CLO1 · CLO5</span>
+        </div>
+        <h3>Machine Learning Foundations &amp; Generalization</h3>
+        <p>Learning paradigms, data representation, parameters and hyperparameters, train-validation-test splits, generalization, underfitting, overfitting, bias-variance intuition, and leakage.</p>
+        <span class="link-card__action">Open lecture</span>
+      </a>
+
+      <a class="link-card" href="lectures/lecture2_ml_data_preprocessing_feature_engineering.pdf">
+        <div class="link-card__meta">
+          <span class="meta-pill">Lecture 2</span>
+          <span class="meta-pill">CLO2</span>
+        </div>
+        <h3>Data Understanding, Preprocessing &amp; Feature Engineering</h3>
+        <p>Data types, exploratory analysis, missing values, outliers, scaling, encoding, transformations, feature engineering, and leakage-safe preprocessing.</p>
+        <span class="link-card__action">Open lecture</span>
+      </a>
+
+      <a class="link-card" href="lectures/lecture3_ml_linear_regression_optimization_regularization.pdf">
+        <div class="link-card__meta">
+          <span class="meta-pill">Lecture 3</span>
+          <span class="meta-pill">CLO3 · CLO4 · CLO5</span>
+        </div>
+        <h3>Linear Regression, Optimization &amp; Regularization</h3>
+        <p>Simple and multiple linear regression, residuals, MSE, gradient descent, polynomial features, Ridge, Lasso, and regression evaluation.</p>
+        <span class="link-card__action">Open lecture</span>
+      </a>
+
+      <a class="link-card" href="lectures/lecture4_ml_logistic_regression_classification.pdf">
+        <div class="link-card__meta">
+          <span class="meta-pill">Lecture 4</span>
+          <span class="meta-pill">CLO3 · CLO4</span>
+        </div>
+        <h3>Logistic Regression &amp; Classification</h3>
+        <p>Binary classification, sigmoid probabilities, thresholds, decision boundaries, binary cross-entropy, gradients, and parameter updates.</p>
+        <span class="link-card__action">Open lecture</span>
+      </a>
+
+      <a class="link-card" href="lectures/lecture5_ml_model_evaluation_validation_selection.pdf">
+        <div class="link-card__meta">
+          <span class="meta-pill">Lecture 5</span>
+          <span class="meta-pill">CLO5</span>
+        </div>
+        <h3>Model Evaluation, Validation &amp; Selection</h3>
+        <p>Confusion matrices, accuracy, precision, recall, F1, cross-validation, model selection, class imbalance, thresholds, and cost-sensitive decisions.</p>
+        <span class="link-card__action">Open lecture</span>
+      </a>
+
+      <a class="link-card" href="lectures/lecture6_ml_decision_trees_knn.pdf">
+        <div class="link-card__meta">
+          <span class="meta-pill">Lecture 6</span>
+          <span class="meta-pill">CLO3 · CLO4 · CLO5</span>
+        </div>
+        <h3>Decision Trees &amp; K-Nearest Neighbors</h3>
+        <p>Recursive partitioning, entropy, information gain, Gini impurity, pruning, Euclidean distance, neighborhood voting, scaling, and local decision boundaries.</p>
+        <span class="link-card__action">Open lecture</span>
+      </a>
+
+      <a class="link-card" href="lectures/lecture7_ml_neural_networks_backpropagation.pdf">
+        <div class="link-card__meta">
+          <span class="meta-pill">Lecture 7</span>
+          <span class="meta-pill">CLO3 · CLO4</span>
+        </div>
+        <h3>Neural Networks &amp; Backpropagation</h3>
+        <p>Neurons, layers, activation functions, forward propagation, loss, chain rule, backpropagation, optimization, training behavior, and regularization.</p>
+        <span class="link-card__action">Open lecture</span>
+      </a>
+
+      <a class="link-card" href="lectures/lecture8_ml_unsupervised_learning_dimensionality_reduction.pdf">
+        <div class="link-card__meta">
+          <span class="meta-pill">Lecture 8</span>
+          <span class="meta-pill">CLO2 · CLO4 · CLO5</span>
+        </div>
+        <h3>Unsupervised Learning &amp; Dimensionality Reduction</h3>
+        <p>K-Means clustering, cluster evaluation and interpretation, hierarchical clustering concepts, PCA, explained variance, projection, and reduced representations.</p>
+        <span class="link-card__action">Open lecture</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="course-section">
+    <div class="section-heading">
+      <div class="section-icon">⌁</div>
+      <div>
+        <h2>Practical Labs</h2>
+        <p>Hands-on work that connects data, algorithms, experiments, and interpretation.</p>
+      </div>
+    </div>
+
+    <div class="labs-box">
+      <div>
+        <p>
+          The practical sequence uses Python and Jupyter Notebook to turn Machine Learning concepts into
+          observable model behavior. Labs cover problem formulation, data quality, preprocessing, regression,
+          classification, evaluation, decision trees, KNN, neural networks, clustering, and PCA.
+        </p>
+        <ul>
+          <li>Predict important model behavior before execution.</li>
+          <li>Connect code to algorithmic calculations and internal model logic.</li>
+          <li>Compare preprocessing choices, models, thresholds, and hyperparameters.</li>
+          <li>Debug faulty workflows and interpret results using appropriate evidence.</li>
+        </ul>
+      </div>
+
+      <a class="labs-button" href="labs/">Open practical labs →</a>
+    </div>
+  </section>
+
+  <section class="course-section">
+    <div class="section-heading">
+      <div class="section-icon">A</div>
+      <div>
+        <h2>Assignments</h2>
+        <p>Two individual assignments focused on formulation and evaluation decision-making.</p>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <a class="link-card link-card--gold" href="assignments/assignment1/">
+        <div class="link-card__meta">
+          <span class="meta-pill meta-pill--gold">Assignment 1</span>
+          <span class="meta-pill">Week 3</span>
+          <span class="meta-pill">5 marks</span>
+          <span class="meta-pill">CLO1</span>
+        </div>
+        <h3>Problem Formulation, Generalization &amp; Data Leakage</h3>
+        <p>Learning paradigms, features and targets, prediction-time reasoning, train-validation-test roles, baselines, generalization, and leakage.</p>
+        <span class="link-card__action">Open assignment</span>
+      </a>
+
+      <a class="link-card link-card--gold" href="assignments/assignment2/">
+        <div class="link-card__meta">
+          <span class="meta-pill meta-pill--gold">Assignment 2</span>
+          <span class="meta-pill">Week 10</span>
+          <span class="meta-pill">5 marks</span>
+          <span class="meta-pill">CLO5</span>
+        </div>
+        <h3>Model Evaluation, Thresholds &amp; Decision-Making</h3>
+        <p>Confusion matrices, classification metrics, class imbalance, threshold trade-offs, error costs, validation discipline, and model selection.</p>
+        <span class="link-card__action">Open assignment</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="course-section">
+    <div class="section-heading">
+      <div class="section-icon">P</div>
+      <div>
+        <h2>Group Project</h2>
+        <p>An end-to-end integration of data preparation, supervised learning, evaluation, and unsupervised analysis.</p>
+      </div>
+    </div>
+
+    <div class="project-box">
+      <div>
+        <h3>Integrated Machine Learning Decision System</h3>
+        <p>
+          Groups of three students define a real-world problem, prepare and analyze a dataset,
+          compare supervised models or model configurations, select a model using validation evidence,
+          evaluate it on a final test set, and add a meaningful K-Means or PCA analysis.
+          The project provides direct evidence for <strong>CLO2, CLO3, CLO4, and CLO5</strong>.
+        </p>
+      </div>
+
+      <a class="project-button" href="project/">Open project brief →</a>
+    </div>
+  </section>
+
+  <section class="course-section">
+    <div class="section-heading">
+      <div class="section-icon">%</div>
+      <div>
+        <h2>Assessment Plan</h2>
+        <p>Assessment is distributed across the semester, with the final exam covering all CLOs.</p>
+      </div>
+    </div>
+
+    <div class="assessment-wrap">
+      <div class="assessment-scroll">
+      
+<table class="assessment-table caption-top table">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Assessment</th>
+<th data-quarto-table-cell-role="th">Timing</th>
+<th data-quarto-table-cell-role="th">Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Assignment 1</td>
+<td>Week 3</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>Quiz 1</td>
+<td>Week 4</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>Midterm Exam</td>
+<td>Week 8</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td>Assignment 2</td>
+<td>Week 10</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>Quiz 2</td>
+<td>Week 12</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>Lab Experiments</td>
+<td>Weeks 2–14</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td>Project</td>
+<td>Week 15</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>Final Exam</td>
+<td>Week 16</td>
+<td>40</td>
+</tr>
+<tr class="odd">
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>100</strong></td>
+</tr>
+</tbody>
+</table>
+
+      </div>
+    </div>
+
+    <div class="note-strip">
+      The <strong>Final Exam covers all CLOs</strong>. Other assessments evaluate the CLOs and
+      topics that have been reached by that stage of the course.
+    </div>
+  </section>
+
+  <section class="course-section">
+    <div class="section-heading">
+      <div class="section-icon">✓</div>
+      <div>
+        <h2>How to Succeed</h2>
+        <p>A practical workflow to use throughout the course.</p>
+      </div>
+    </div>
+
+    <div class="simple-panel">
+      <ul>
+        <li><strong>Understand the problem before fitting a model.</strong> Identify the observation, features, target, prediction time, and evaluation goal.</li>
+        <li><strong>Prepare data deliberately.</strong> Treat missing values, scaling, encoding, outliers, and feature engineering as modeling decisions.</li>
+        <li><strong>Predict before execution.</strong> State what you expect a model, threshold, or hyperparameter change to do and explain why.</li>
+        <li><strong>Separate training, validation, and final testing.</strong> Use validation evidence for decisions and preserve the test set for final evaluation.</li>
+        <li><strong>Interpret more than one metric.</strong> Connect errors and performance measures to the real-world problem.</li>
+        <li><strong>Explain why.</strong> The course rewards reasoning and interpretation, not only successful code or high scores.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="course-section">
+    <div class="section-heading">
+      <div class="section-icon">R</div>
+      <div>
+        <h2>References &amp; Tools</h2>
+        <p>Primary study resources used throughout the course.</p>
+      </div>
+    </div>
+
+    <div class="simple-panel">
+      <p>
+        <strong>Primary textbook:</strong> Gareth James, Daniela Witten, Trevor Hastie, and Robert Tibshirani,
+        <em>An Introduction to Statistical Learning with Applications in Python</em>,
+        Python Edition, Springer, 2023.
+      </p>
+
+      <p>
+        <strong>Supporting reference:</strong> Aurélien Géron,
+        <em>Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow</em>,
+        O'Reilly, 2022.
+      </p>
+
+      <p>
+        <strong>Supporting reference:</strong> Kevin P. Murphy,
+        <em>Probabilistic Machine Learning: An Introduction</em>,
+        MIT Press, 2022.
+      </p>
+
+      <p>
+        <strong>Practical environment:</strong> Python 3, Jupyter Notebook, NumPy, Pandas,
+        Matplotlib, SciPy, and scikit-learn.
+      </p>
+    </div>
+  </section>
+
+  <footer class="iu-footer">
+    <div class="iu-footer__main">
+      <span><strong>Dr. Fayçal Hamdi</strong></span>
+      <span>Machine Learning — Faculty of Computer and Information Systems</span>
+    </div>
+  </footer>
+
+</div>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="index_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

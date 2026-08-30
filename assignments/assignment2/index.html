@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Machine Learning — Assignment 2</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-2244a62d8207ad721db1ea9f3e48a014.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-full">
+
+<main class="content column-page" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Machine Learning — Assignment 2</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="iu-course iu-subpage">
+
+  <header class="iu-page-hero iu-page-hero--assignment">
+    <div class="iu-page-hero__nav">
+      <a class="iu-back-link" href="../../">← Course home</a>
+      <span class="iu-page-hero__label">Assignment 2</span>
+    </div>
+
+    <div class="iu-page-hero__main iu-page-hero__main--no-logo">
+      <div>
+        <div class="iu-eyebrow">Machine Learning</div>
+        <h1>Model Evaluation, Thresholds and Decision-Making</h1>
+        <p class="iu-page-hero__subtitle">
+          An individual assignment on confusion matrices, classification metrics,
+          threshold trade-offs, cost-sensitive evaluation, validation discipline,
+          and defensible model selection.
+        </p>
+
+        <div class="iu-instructor">
+          <strong>Dr. Fayçal Hamdi</strong>
+          <span>Faculty of Computer and Information Systems</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="iu-page-meta-grid">
+      <div class="iu-page-meta-card">
+        <strong>Week 10</strong>
+        <span>Assessment timing</span>
+      </div>
+      <div class="iu-page-meta-card">
+        <strong>CLO5</strong>
+        <span>Assessed outcome</span>
+      </div>
+      <div class="iu-page-meta-card">
+        <strong>5 marks</strong>
+        <span>Individual assignment</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="project-quicknav" aria-label="Assignment navigation">
+    <span class="project-quicknav__label">Assignment guide</span>
+    <a href="#overview">Overview</a>
+    <a href="#scenario">Scenario</a>
+    <a href="#confusion">Confusion matrices</a>
+    <a href="#metrics">Metrics</a>
+    <a href="#thresholds">Thresholds</a>
+    <a href="#costs">Costs</a>
+    <a href="#selection">Model selection</a>
+    <a href="#personalized">Personalized task</a>
+    <a href="#rubric">Rubric</a>
+    <a href="#submission">Submission</a>
+  </nav>
+</div>
+<div class="iu-content-page assignment-page">
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Assignment Overview</h2>
+<div class="iu-section-panel">
+<p><strong>Assessment:</strong> Assignment 2<br>
+<strong>Week:</strong> 10<br>
+<strong>Marks:</strong> 5<br>
+<strong>Assessed CLO:</strong> <strong>CLO5</strong></p>
+<blockquote class="blockquote">
+<p><strong>CLO5:</strong> Evaluate machine learning models using appropriate metrics and justify decisions based on performance trade-offs and real-world context.</p>
+</blockquote>
+<p>This is an <strong>individual assignment</strong>.</p>
+<p>The purpose of this assignment is to assess whether you can move beyond a single performance number and make a defensible classification decision using:</p>
+<ul>
+<li>confusion matrices;</li>
+<li>accuracy, precision, recall, specificity, and <span class="math inline">\(F_1\)</span>;</li>
+<li>class imbalance;</li>
+<li>decision thresholds;</li>
+<li>false-positive / false-negative trade-offs;</li>
+<li>cost-sensitive evaluation;</li>
+<li>validation-based model selection;</li>
+<li>final-test discipline.</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Assessment principle
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The best classifier is not necessarily the one with the highest accuracy.</p>
+<p>A strong answer must connect <strong>metrics to the application</strong>, explain the consequences of different error types, and justify the final model and threshold using appropriate evidence.</p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="scenario" class="level1 assignment-part-heading">
+<h1 class="assignment-part-heading">Scenario — Fraud Detection for Online Payments</h1>
+<div class="iu-section-panel">
+<p>An online payment company wants to detect fraudulent transactions.</p>
+<p>For each transaction, a Machine Learning model outputs:</p>
+<p><span class="math display">\[
+p = P(\text{fraud}=1 \mid x)
+\]</span></p>
+<p>where:</p>
+<ul>
+<li><code>1</code> = fraudulent transaction;</li>
+<li><code>0</code> = legitimate transaction.</li>
+</ul>
+<p>The company has developed two candidate classifiers:</p>
+<ul>
+<li><strong>Model A — Logistic Regression</strong></li>
+<li><strong>Model B — Decision Tree</strong></li>
+</ul>
+<p>Both models are evaluated on the <strong>same validation set of 5,000 transactions</strong>.</p>
+<p>The validation set contains:</p>
+<pre class="text"><code>100 fraudulent transactions
+4,900 legitimate transactions</code></pre>
+<p>Their results at the default threshold <span class="math inline">\(t=0.50\)</span> are:</p>
+<section id="model-a-logistic-regression" class="level3">
+<h3 class="anchored" data-anchor-id="model-a-logistic-regression">Model A — Logistic Regression</h3>
+<ul>
+<li>correctly detected frauds: <strong>82</strong></li>
+<li>missed frauds: <strong>18</strong></li>
+<li>legitimate transactions incorrectly flagged: <strong>120</strong></li>
+</ul>
+</section>
+<section id="model-b-decision-tree" class="level3">
+<h3 class="anchored" data-anchor-id="model-b-decision-tree">Model B — Decision Tree</h3>
+<ul>
+<li>correctly detected frauds: <strong>91</strong></li>
+<li>missed frauds: <strong>9</strong></li>
+<li>legitimate transactions incorrectly flagged: <strong>310</strong></li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Positive class
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For this assignment:</p>
+<p><span class="math display">\[
+\text{Positive class} = \text{Fraud}
+\]</span></p>
+<p>Therefore:</p>
+<ul>
+<li>TP = correctly detected fraud;</li>
+<li>FN = missed fraud;</li>
+<li>FP = legitimate transaction incorrectly flagged;</li>
+<li>TN = legitimate transaction correctly accepted.</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<hr>
+</section>
+<section id="confusion" class="level1 assignment-part-heading">
+<h1 class="assignment-part-heading">Part I — Construct the Confusion Matrices</h1>
+<section id="task-1-complete-the-counts" class="level2 iu-section-panel">
+<h2 class="anchored" data-anchor-id="task-1-complete-the-counts">Task 1 — Complete the Counts</h2>
+<p>For each model:</p>
+<ol type="1">
+<li>calculate the number of true negatives;</li>
+<li>construct a complete <span class="math inline">\(2\times2\)</span> confusion matrix.</li>
+</ol>
+<p>Use this structure:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">Predicted Fraud</th>
+<th style="text-align: right;">Predicted Legitimate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Actual Fraud</strong></td>
+<td style="text-align: right;">TP</td>
+<td style="text-align: right;">FN</td>
+</tr>
+<tr class="even">
+<td><strong>Actual Legitimate</strong></td>
+<td style="text-align: right;">FP</td>
+<td style="text-align: right;">TN</td>
+</tr>
+</tbody>
+</table>
+<section id="model-a" class="level3">
+<h3 class="anchored" data-anchor-id="model-a">Model A</h3>
+<p><strong>Your confusion matrix:</strong></p>
+</section>
+<section id="model-b" class="level3">
+<h3 class="anchored" data-anchor-id="model-b">Model B</h3>
+<p><strong>Your confusion matrix:</strong></p>
+<p>Then answer:</p>
+<ol type="1">
+<li>Which model misses fewer fraudulent transactions?</li>
+<li>Which model creates fewer false alarms?</li>
+<li>Why can these two objectives conflict?</li>
+</ol>
+</section>
+</section>
+<hr>
+</section>
+<section id="metrics" class="level1 assignment-part-heading">
+<h1 class="assignment-part-heading">Part II — Calculate and Interpret the Metrics</h1>
+<div class="iu-section-panel">
+<p>Use:</p>
+<p><span class="math display">\[
+Accuracy
+=
+\frac{TP+TN}{TP+TN+FP+FN}
+\]</span></p>
+<p><span class="math display">\[
+Precision
+=
+\frac{TP}{TP+FP}
+\]</span></p>
+<p><span class="math display">\[
+Recall
+=
+\frac{TP}{TP+FN}
+\]</span></p>
+<p><span class="math display">\[
+Specificity
+=
+\frac{TN}{TN+FP}
+\]</span></p>
+<p><span class="math display">\[
+F_1
+=
+2\frac{Precision\times Recall}{Precision+Recall}
+\]</span></p>
+<section id="task-2-evaluate-both-models" class="level2">
+<h2 class="anchored" data-anchor-id="task-2-evaluate-both-models">Task 2 — Evaluate Both Models</h2>
+<p>Calculate for <strong>Model A</strong> and <strong>Model B</strong>:</p>
+<ul>
+<li>accuracy;</li>
+<li>precision;</li>
+<li>recall;</li>
+<li>specificity;</li>
+<li><span class="math inline">\(F_1\)</span> score.</li>
+</ul>
+<p>Round final values to <strong>three decimal places</strong>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th style="text-align: right;">Model A</th>
+<th style="text-align: right;">Model B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Accuracy</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td>Precision</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td>Recall</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td>Specificity</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(F_1\)</span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<p>Then answer:</p>
+<ol type="1">
+<li>Which model has higher accuracy?</li>
+<li>Which has higher precision?</li>
+<li>Which has higher recall?</li>
+<li>Which has higher <span class="math inline">\(F_1\)</span>?</li>
+<li>Why is accuracy potentially misleading in this dataset?</li>
+</ol>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Class imbalance matters
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Only:</p>
+<p><span class="math display">\[
+\frac{100}{5000}=2\%
+\]</span></p>
+<p>of the validation transactions are fraudulent.</p>
+<p>A classifier can therefore achieve very high accuracy while still missing many fraud cases.</p>
+</div>
+</div>
+</section>
+</div>
+<hr>
+</section>
+<section id="imbalance" class="level1 assignment-part-heading">
+<h1 class="assignment-part-heading">Part III — Baseline and Class Imbalance</h1>
+<section id="task-3-compare-against-a-trivial-baseline" class="level2 iu-section-panel">
+<h2 class="anchored" data-anchor-id="task-3-compare-against-a-trivial-baseline">Task 3 — Compare Against a Trivial Baseline</h2>
+<p>Suppose a baseline predicts:</p>
+<pre class="text"><code>legitimate</code></pre>
+<p>for every transaction.</p>
+<p>Answer:</p>
+<ol type="1">
+<li>What accuracy does this baseline achieve?</li>
+<li>What is its fraud recall?</li>
+<li>Why is the accuracy numerically high?</li>
+<li>Why is the model operationally useless for fraud detection?</li>
+<li>Which metric exposes the problem most directly?</li>
+</ol>
+<p><strong>Your answer:</strong></p>
+</section>
+<hr>
+</section>
+<section id="thresholds" class="level1 assignment-part-heading">
+<h1 class="assignment-part-heading">Part IV — Decision Thresholds</h1>
+<div class="iu-section-panel">
+<p>Model A produces predicted probabilities.</p>
+<p>The company evaluates Model A at three thresholds:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Threshold</th>
+<th style="text-align: right;">TP</th>
+<th style="text-align: right;">FP</th>
+<th style="text-align: right;">FN</th>
+<th style="text-align: right;">TN</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(0.30\)</span></td>
+<td style="text-align: right;">94</td>
+<td style="text-align: right;">420</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">4480</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(0.50\)</span></td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">4780</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(0.70\)</span></td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">4865</td>
+</tr>
+</tbody>
+</table>
+<section id="task-4-analyze-threshold-behavior" class="level2">
+<h2 class="anchored" data-anchor-id="task-4-analyze-threshold-behavior">Task 4 — Analyze Threshold Behavior</h2>
+<p>For each threshold, calculate:</p>
+<ul>
+<li>precision;</li>
+<li>recall;</li>
+<li><span class="math inline">\(F_1\)</span>.</li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Threshold</th>
+<th style="text-align: right;">Precision</th>
+<th style="text-align: right;">Recall</th>
+<th style="text-align: right;"><span class="math inline">\(F_1\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(0.30\)</span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(0.50\)</span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(0.70\)</span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<p>Then answer:</p>
+<ol type="1">
+<li>What happens to recall as the threshold increases?</li>
+<li>What happens to the number of false positives?</li>
+<li>Which threshold has the highest precision?</li>
+<li>Which threshold has the highest recall?</li>
+<li>Why is there no universally best threshold?</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Threshold changes decisions, not the learned probabilities
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Changing the threshold does not retrain the classifier.</p>
+<p>It changes the rule used to convert a predicted probability into a final class decision.</p>
+</div>
+</div>
+</section>
+</div>
+<hr>
+</section>
+<section id="costs" class="level1 assignment-part-heading">
+<h1 class="assignment-part-heading">Part V — Cost-Sensitive Evaluation</h1>
+<div class="iu-section-panel">
+<p>The payment company estimates the operational cost of errors as:</p>
+<pre class="text"><code>False Negative (missed fraud) = 500 SAR
+False Positive (false alarm)  = 10 SAR</code></pre>
+<p>For a threshold <span class="math inline">\(t\)</span>, define:</p>
+<p><span class="math display">\[
+Cost(t)
+=
+500(FN)
++
+10(FP).
+\]</span></p>
+<section id="task-5-select-a-threshold-by-cost" class="level2">
+<h2 class="anchored" data-anchor-id="task-5-select-a-threshold-by-cost">Task 5 — Select a Threshold by Cost</h2>
+<p>Using the three threshold results from Part IV:</p>
+<ol type="1">
+<li>calculate the total error cost for each threshold;</li>
+<li>complete the table;</li>
+<li>identify the lowest-cost threshold.</li>
+</ol>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Threshold</th>
+<th style="text-align: right;">FN Cost</th>
+<th style="text-align: right;">FP Cost</th>
+<th style="text-align: right;">Total Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(0.30\)</span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(0.50\)</span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(0.70\)</span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<p>Then answer:</p>
+<ol type="1">
+<li>Does the lowest-cost threshold also have the highest accuracy?</li>
+<li>Why can a threshold with more false positives still be economically preferable?</li>
+<li>What assumption is represented by the values 500 SAR and 10 SAR?</li>
+<li>Who should determine these costs in a real organization?</li>
+</ol>
+</section>
+</div>
+<hr>
+</section>
+<section id="selection" class="level1 assignment-part-heading">
+<h1 class="assignment-part-heading">Part VI — Model Selection and Final-Test Discipline</h1>
+<div class="iu-section-panel">
+<p>The company has a separate <strong>test set</strong> that has not yet been used.</p>
+<p>A team member proposes:</p>
+<blockquote class="blockquote">
+<p>“Let us evaluate both models at many thresholds on the test set, choose the best model-threshold combination, and report that test score as final performance.”</p>
+</blockquote>
+<section id="task-6-evaluate-this-proposal" class="level2">
+<h2 class="anchored" data-anchor-id="task-6-evaluate-this-proposal">Task 6 — Evaluate This Proposal</h2>
+<p>Answer:</p>
+<ol type="1">
+<li>Why is this procedure invalid?</li>
+<li>Which dataset should be used to choose the model?</li>
+<li>Which dataset should be used to choose the decision threshold?</li>
+<li>What is the proper role of the test set?</li>
+<li>If the test set is repeatedly used for decisions, what happens to its value as an unbiased estimate of generalization?</li>
+</ol>
+<p>Then make a final recommendation based only on the <strong>validation evidence</strong> in this assignment:</p>
+<ul>
+<li>Model A or Model B?</li>
+<li>Which threshold?</li>
+<li>Which two or three metrics/costs most strongly support your decision?</li>
+</ul>
+<p><strong>Your recommendation:</strong></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Separate selection from final evaluation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A sound workflow is:</p>
+<p><span class="math display">\[
+\boxed{
+\text{Train}
+\rightarrow
+\text{Validate / Select}
+\rightarrow
+\text{Final Test}
+}
+\]</span></p>
+<p>The final test set should answer:</p>
+<blockquote class="blockquote">
+<p>“How well does the already selected system generalize?”</p>
+</blockquote>
+<p>not:</p>
+<blockquote class="blockquote">
+<p>“Which system should we choose?”</p>
+</blockquote>
+</div>
+</div>
+</section>
+</div>
+<hr>
+</section>
+<section id="personalized" class="level1 assignment-part-heading">
+<h1 class="assignment-part-heading">Part VII — Student-ID-Based Decision Scenario</h1>
+<div class="iu-section-panel">
+<p>Use the <strong>last digit of your student ID</strong> to determine your application priority.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 57%">
+<col style="width: 42%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Last digit</th>
+<th>Application priority</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0–2</td>
+<td>Missing fraud is extremely costly</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3–5</td>
+<td>False alarms are expensive because manual review capacity is limited</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6–7</td>
+<td>Precision and recall should be balanced</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8–9</td>
+<td>At least 90% fraud recall is required</td>
+</tr>
+</tbody>
+</table>
+<section id="task-7-personalized-decision" class="level2">
+<h2 class="anchored" data-anchor-id="task-7-personalized-decision">Task 7 — Personalized Decision</h2>
+<p>State your:</p>
+<ul>
+<li>last digit;</li>
+<li>assigned application priority.</li>
+</ul>
+<p>Then use the Model A threshold table to answer:</p>
+<ol type="1">
+<li>which threshold you would choose;</li>
+<li>which metric is most important for your assigned priority;</li>
+<li>which error type you are trying to reduce;</li>
+<li>what trade-off you accept;</li>
+<li>why your chosen threshold may differ from another student’s choice.</li>
+</ol>
+<p>Your answer must refer to the actual values from the threshold table.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Different priorities can justify different decisions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The same classifier can support different operating thresholds when the real-world costs and constraints are different.</p>
+<p>Your decision must be <strong>consistent with your assigned priority and supported by the evidence</strong>.</p>
+</div>
+</div>
+</section>
+</div>
+<hr>
+</section>
+<section id="understanding-check" class="level1 assignment-part-heading">
+<h1 class="assignment-part-heading">Part VIII — Individual Understanding Check</h1>
+<div class="iu-section-panel">
+<p>Your instructor may ask one short question about your submitted assignment.</p>
+<p>Possible questions include:</p>
+<ul>
+<li>Explain TP, TN, FP, and FN in the fraud context.</li>
+<li>Why is accuracy misleading for this dataset?</li>
+<li>What is the difference between precision and recall?</li>
+<li>Why does lowering the threshold usually increase recall?</li>
+<li>Why can a model with lower accuracy still be preferable?</li>
+<li>Why does cost-sensitive evaluation matter?</li>
+<li>Why should the test set not be used for threshold selection?</li>
+<li>What is the role of validation data?</li>
+<li>Why did your personalized scenario lead to your chosen threshold?</li>
+<li>If the cost of a false positive increased sharply, how might your preferred threshold change?</li>
+</ul>
+<p>The purpose is to confirm your individual understanding of the reasoning used in your own submission.</p>
+</div>
+<hr>
+</section>
+<section id="rubric" class="level1 assignment-part-heading">
+<h1 class="assignment-part-heading">Assessment Rubric — 5 Marks</h1>
+<div class="iu-section-panel">
+<p>The rubric below evaluates <strong>CLO5</strong> directly.</p>
+<p>Marks depend on both <strong>correct calculations</strong> and the quality of the <strong>decision-making justification</strong>.</p>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 30%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Criterion</th>
+<th>CLO Evidence</th>
+<th style="text-align: right;">Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Confusion matrices and core calculations</td>
+<td>Correctly derives TP, TN, FP, FN and classification metrics</td>
+<td style="text-align: right;">1.25</td>
+</tr>
+<tr class="even">
+<td>Metric interpretation and class imbalance</td>
+<td>Explains differences among accuracy, precision, recall, specificity, and <span class="math inline">\(F_1\)</span> in context</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+<tr class="odd">
+<td>Threshold trade-off analysis</td>
+<td>Correctly analyzes how threshold changes affect FP, FN, precision, and recall</td>
+<td style="text-align: right;">0.75</td>
+</tr>
+<tr class="even">
+<td>Cost-sensitive evaluation</td>
+<td>Computes error costs correctly and interprets operational consequences</td>
+<td style="text-align: right;">0.75</td>
+</tr>
+<tr class="odd">
+<td>Model selection and final-test discipline</td>
+<td>Justifies model/threshold choice and separates validation from final testing</td>
+<td style="text-align: right;">0.75</td>
+</tr>
+<tr class="even">
+<td>Personalized decision and individual understanding</td>
+<td>Adapts the decision to the assigned application priority and defends it</td>
+<td style="text-align: right;">0.50</td>
+</tr>
+<tr class="odd">
+<td><strong>Total</strong></td>
+<td><strong>CLO5</strong></td>
+<td style="text-align: right;"><strong>5.00</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="submission" class="level1 assignment-part-heading">
+<h1 class="assignment-part-heading">Submission Requirements</h1>
+<div class="iu-section-panel">
+<p>Submit <strong>one PDF file</strong>.</p>
+<p>Your submission must:</p>
+<ul>
+<li>answer all tasks;</li>
+<li>show the main calculations clearly;</li>
+<li>round requested metric values to three decimal places;</li>
+<li>include your student-ID-based decision in Part VII;</li>
+<li>justify recommendations using actual evidence;</li>
+<li>use appropriate Machine Learning terminology;</li>
+<li>distinguish clearly between validation and final test data;</li>
+<li>be readable and professionally organized.</li>
+</ul>
+<p>Suggested filename:</p>
+<pre class="text"><code>Assignment2_StudentID</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Final Reminder
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Model evaluation is not a search for the single largest metric.</p>
+<p>A defensible Machine Learning decision connects:</p>
+<p><span class="math display">\[
+\boxed{
+\text{errors}
+\rightarrow
+\text{metrics}
+\rightarrow
+\text{thresholds}
+\rightarrow
+\text{costs}
+\rightarrow
+\text{decision}
+}
+\]</span></p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="iu-course">
+  <footer class="iu-footer iu-subpage-footer">
+    <div class="iu-footer__main">
+      <span><strong>Dr. Fayçal Hamdi</strong></span>
+      <span>Machine Learning — Assignment 2</span>
+    </div>
+  </footer>
+</div>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="index_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
